@@ -1,0 +1,216 @@
+<form nz-form [formGroup]="searchForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12" class="row">
+            <nz-form-item>
+                <nz-form-label class="col-md-3">Tên sản phẩm</nz-form-label>
+                <nz-form-control class="col-md-9">
+                    <input nz-input  formControlName="productName" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12" class="row">
+            <nz-form-item>
+                <nz-form-label class="col-md-3">Thương hiệu</nz-form-label>
+                <nz-form-control class="col-md-9">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="--Tất cả--" formControlName="brand">
+                        <nz-option *ngFor="let brand of listOfBrand" nzLabel="{{brand.brandName}}"
+                            nzValue="{{brand.brandID}}"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12" class="row">
+            <nz-form-item>
+                <nz-form-label class="col-md-3">Thể loại</nz-form-label>
+                <nz-form-control class="col-md-9">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="--Tất cả--" formControlName="category">
+                        <nz-option *ngFor="let category of listOfCategory" nzLabel="{{category.categoryName}}"
+                            nzValue="{{category.categoryID}}"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12" class="row">
+            <nz-form-item>
+                <nz-form-label class="col-md-3">Khoảng giá</nz-form-label>
+                <nz-form-control class="col-md-4">
+                    <nz-input-number class="w-100" formControlName="priceFrom" [nzMin]="0" [nzStep]="100000">
+                    </nz-input-number>
+                </nz-form-control>
+                <nz-form-control class="col-md-4">
+                    <nz-input-number class="w-100" formControlName="priceTo" [nzMin]="0" [nzStep]="100000">
+                    </nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12" class="row">
+            <nz-form-item>
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <button (click)="search()" class="btn btn-sm btn-success"><i class="fas fa-search"></i> Tìm kiếm</button>
+                    <button (click)="showModal(null,'INSERT')" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Thêm mới</button>
+                    <!-- <button  (click)="resetForm()" class="btn btn-sm btn-outline-success">Clear</button> -->
+                </div>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+<div class="mt-1"><b>{{"Tổng số bản ghi: "+total}}</b></div>
+<div class="mt-1">
+    <nz-table class="table table-bordered table-striped table-hover mr-0" nzShowSizeChanger [nzData]="listOfData" [nzFrontPagination]="false" [nzLoading]="loading"
+        [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
+        (nzQueryParams)="onQueryParamsChange($event)">
+        <thead>
+            <tr>
+                <th style="text-align: center;">STT</th>
+                <th style="text-align: center;">Tên</th>
+                <th style="text-align: center;">Thương hiệu</th>
+                <th style="text-align: center;">Hình ảnh</th>
+                <th nzColumnKey="productPrice" [nzSortFn]="true" style="text-align: center;">Giá bán</th>
+                <th nzColumnKey="productImportPrice" [nzSortFn]="true" style="text-align: center;">Giá nhập</th>
+                <th nzColumnKey="productMarketprice" [nzSortFn]="true" style="text-align: center;">Giá thị trường</th>
+                <th nzColumnKey="productQuantily" [nzSortFn]="true" style="text-align: center;">Số lượng</th>
+                <th style="text-align: center;">Thao tác
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of listOfData; ; let i = index">
+                <td>{{i+1}}</td>
+                <td><span class="detail"(click)="showModal(data.productID,'VIEW')">{{data.productName}}</span></td>
+                <td>{{data?.brand?.brandName}}</td>
+                <td class="p-10">
+                    <img nz-image width="100px" height="100px" nzSrc="../../assets/{{data.productImage}}"
+                        alt="{{data.productName}}" />
+                </td>
+                <td>{{data.productPrice| number}}</td>
+                <td>{{data.productMarketprice| number}}</td>
+                <td>{{data.productImportPrice| number}}</td>
+                <td>{{data.productQuantily| number}}</td>
+                <td class="text-center">
+                    <button (click)="showModal(data.productID,'EDIT')" title="Sửa" class="btn btn-sm btn-success mb-1"><i class="fas fa-edit"></i></button>
+                    <button (click)="delProduct(data.productID)" title="Xóa" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        </tbody>
+        
+    </nz-table>
+</div>
+
+<nz-modal class="w-700" [(nzVisible)]="isVisible" nzTitle="{{isEdit?'Chỉnh sửa':(isInsert?'Thêm mới':'Xem chi tiết')}}"
+(nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()" >
+    <ng-container *nzModalContent>
+        <div class="f-container">
+            <form nz-form [formGroup]="productForm">
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng nhập tên ">
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Tên sản phẩm</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-group>
+                                    <input type="text" nz-input formControlName="productName"/>
+                                </nz-input-group>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Hình ảnh</div>
+                            <div nz-col nzSpan="18">
+                                <img *ngIf="imageUrl" nz-image width="100px" height="100px"
+                                nzSrc="{{imageUrl}}"  />
+                                <input *ngIf="isInsert || isEdit" type="file" #Image accept="image/*" class="hidden" name="avatar"
+                                    (change)="onFileImageSelect($event.target.files)" multiple id="img-change">
+                                <img *ngIf="isView" nz-image width="100px" height="100px"
+                                    nzSrc="../../assets/{{imageProduct}}"  />
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Thương hiệu</div>
+                            <div nz-col nzSpan="18">
+                                <nz-select nzShowSearch nzAllowClear 
+                                    formControlName="brand1">
+                                    <nz-option *ngFor="let brand of listOfBrand" nzLabel="{{brand.brandName}}"
+                                        nzValue="{{brand.brandID}}"></nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Thể loại</div>
+                            <div nz-col nzSpan="18">
+                                <nz-select nzShowSearch nzAllowClear 
+                                    formControlName="category1">
+                                    <nz-option *ngFor="let category of listOfCategory"
+                                        nzLabel="{{category.categoryName}}" nzValue="{{category.categoryID}}">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Mô tả</div>
+                            <div nz-col nzSpan="18">
+                                <textarea rows="4" nz-input formControlName="productDescription"></textarea>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Ram</div>
+                            <div nz-col nzSpan="18">
+                                <input nz-input  formControlName="productRAM" />
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Giá bán</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-number class="w-100" formControlName="productPrice" [nzMin]="0"
+                                    [nzStep]="100000">
+                                </nz-input-number>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Giá thị trường</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-number class="w-100" formControlName="productMarketprice" [nzMin]="0"
+                                    [nzStep]="100000">
+                                </nz-input-number>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Giá nhập</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-number class="w-100" formControlName="productImportPrice" [nzMin]="0"
+                                    [nzStep]="100000">
+                                </nz-input-number>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Số lượng</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-number class="w-100" formControlName="productQuantily" [nzMin]="0"
+                                    [nzStep]="1">
+                                </nz-input-number>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Kích thước</div>
+                            <div nz-col nzSpan="18">
+                                <input nz-input  formControlName="productDimensions" />
+                            </div>
+                        </div>
+                        
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Cân nặng</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-number class="w-100" formControlName="productWeight" [nzMin]="0" [nzStep]="1">
+                                </nz-input-number>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Chất liệu</div>
+                            <div nz-col nzSpan="18">
+                                <input nz-input  formControlName="productMaterial" />
+                            </div>
+                        </div>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </div>
+    </ng-container>
+</nz-modal>

@@ -1,0 +1,41 @@
+<div class="mt-1"><b>{{"Tổng số bản ghi: "+total}}</b></div>
+<nz-table class="table table-bordered table-striped table-hover mr-0 mt-2" nzShowSizeChanger [nzData]="listOfData" [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total"
+    [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" (nzQueryParams)="onQueryParamsChange($event)">
+    <thead>
+        <tr>
+            <th nzColumnKey="categoryName" [nzSortFn]="true" style="text-align: center;" width="70%">Tên thương hiệu</th>
+            <th class="text-center" width="30%">
+                    <button (click)="showModal(null)" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Thêm mới</button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of listOfData">
+            <td class="text-center">{{ data.brandName }}</td>
+            <td class="text-center">
+                <button (click)="showModal(data.brandID)" title="Sửa" class="btn btn-sm btn-success mb-1"><i class="fas fa-edit"></i></button>&nbsp; &nbsp; 
+                <button (click)="delBrand(data.brandID)" title="Xóa" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{isEdit?'Chỉnh sửa':'Thêm mới'}}" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="validateForm">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Vui lòng nhập tên thương hiệu!">
+                    <div nz-row>
+                        <div nz-col nzSpan="12">Tên thương hiệu</div>
+                        <div nz-col nzSpan="12">
+                            <nz-input-group>
+                                <input type="text" nz-input formControlName="brandName" placeholder="Tên thương hiệu" />
+                            </nz-input-group>
+                        </div>
+                    </div>
+
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>

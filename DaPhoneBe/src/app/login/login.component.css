@@ -1,0 +1,46 @@
+.spanRq{
+  color: red;
+  margin-left: 3px;
+}
+
+.rq-ip{
+  padding-left: 0px !important;
+}
+
+.number-cs {
+  text-align: right;
+}
+a:hover{
+  cursor:pointer;
+}
+
+
+.login {
+  width: 500px;
+  padding: 8% 0 0;
+  margin: auto;
+  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background-image: linear-gradient( 179.4deg,  #00483d, rgba(15, 178, 102, 0.466) );
+  border-radius: 10px;
+  max-width: 100%;
+  margin: 100px auto 100px;
+  padding: 45px;
+  text-align: center;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}

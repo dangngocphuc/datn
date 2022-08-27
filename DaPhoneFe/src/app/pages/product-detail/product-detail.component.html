@@ -1,0 +1,165 @@
+
+<div class="container" style="margin-top:110px">
+    <nav class="d-flex align-items-center" >
+        <a href="/home" style="color: #00483d;">Trang chủ <span class="lnr lnr-arrow-right"></span>&nbsp;</a>
+        <a href="/home" style="color: #00483d;">Sản phẩm <span class="lnr lnr-arrow-right"></span>&nbsp;</a>
+        <a href="#" style="color: #00483d;"> Chi tiết sản phẩm</a>
+    </nav>
+</div>
+<div class="product">
+    <div class="container row  mx-auto">
+        
+        <div class="col-md-1"></div>
+        <div class="col-md-10 animated row wow fadeInRight" data-wow-delay=".5s">
+            <div class="col-md-5 grid-im">
+
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <div class="thumb-image"> <img src="../../assets/{{product.productImage}}"
+                                    data-imagezoom="true" class="img-responsive"> </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-7 single-top-in">
+                <div class="span_2_of_a1 simpleCart_shelfItem">
+                    <h3>{{product.productName}}</h3>
+
+                    <div class="price_single">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <span  *ngIf="product.productQuantily == 0 "  class="text-danger">Đã hết hàng</span>
+                                <br>
+                                <span class="reducedfrom item_price"> {{product.productPrice | number}} VNĐ</span>
+                            </div>
+                            <div class="col-md-3">
+                                <button *ngIf="product.productQuantily > 0 " (click)="addToCart(product)" class="btn btn-outline-success"> Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="clearfix"> </div>
+                        <div style="color:#0056b3">Số lượng sản phẩm : {{product.productQuantily | number}}</div>
+                    </div>
+
+
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="sap_tabs">
+                    <div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+                        <ul class="resp-tabs-list row">
+                            <li class="resp-tab-item col-md-6" aria-controls="tab_item-0" role="tab"><span>Mô Tả Sản Phẩm</span>
+                            </li>
+                            <li class="resp-tab-item col-md-6" aria-controls="tab_item-1" role="tab"><span><i
+                                        class="glyphicon glyphicon-info-sign"></i> Thông Tin Chi Tiết</span></li>
+                            
+                            <div class="clearfix"></div>
+                        </ul>
+                        <div class="resp-tabs-container">
+                            <h2 class="resp-accordion resp-tab-active" role="tab" aria-controls="tab_item-0"><span
+                                    class="resp-arrow"></span>Mô Tả Sản Phẩm</h2>
+                            <div class="tab-1 resp-tab-content resp-tab-content-active" aria-labelledby="tab_item-0"
+                                style="display:block">
+                                <div class="facts">
+                                    <ul>
+                                        <li>
+                                            <h4>ƯU ĐÃI KHÁCH HÀNG :</h4>
+                                        </li>
+                                        <li>Sản phẩm chính hãng</li>
+                                        <li>Khuyến mãi đặt biệt</li>
+                                        <li>GIAO HÀNG MIỄN PHÍ VỚI HÓA ĐƠN TRÊN 8.000.000 Đ</li>
+                                        <li>Vận chuyển nhanh</li>
+                                        <li>Bảo hành sản phẩm trọn đời</li>
+                                        <li>Hỗ trợ trực tuyến dành cho khách hàng VIP</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <h2 class="resp-accordion" role="tab" aria-controls="tab_item-1"><span
+                                    class="resp-arrow"></span>Additional Information</h2>
+                            <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
+                                <h3>Thông số kỹ thuật chi tiết {{product.productName}}
+                                </h3>
+                                <div class="facts1">
+                                    <h3>Mô tả</h3>
+                                    <div class="color">
+
+                                        <span>
+                                            {{product.productDescription}}
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <h3>Kích thước & trọng lượng</h3>
+                                    <div class="color">
+                                        <p>Kích thước</p>
+                                        <span>
+                                            {{product.productDimensions}}
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="color">
+                                        <p>Trọng lượng</p>
+                                        <span>
+                                            {{product.productWeight}}
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="color">
+                                        <p>Chất liệu</p>
+                                        <span>
+                                            {{product.productMaterial}}
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!---->
+                </div>
+
+                <div class="clearfix"> </div>
+               
+            </div>
+            <div >
+                <h3>SẢN PHẨM LIÊN QUAN</h3>
+            </div>
+            <div class="lattest-product-area pb-40 category-list">
+                <div class="mid-popular row" id="content_value">
+                    <div *ngFor="let item of listOfData" class="col-lg-4 col-md-6">
+                        <div class="single-product">
+                            <div class="text-center">
+                                <img style="height:220px; width:75%;" class="img-fluid"
+                                src="../../assets/{{item.productImage}}" alt="">
+                            </div>
+                            
+                            <div class="product-details">
+                                <h6><a href="product-detail/{{item.productID}}">{{item.productName}}</a></h6>
+                                <div class="price">
+                                    <h6>{{item.productPrice | number}} VNĐ &emsp;<small>{{item.productMarketprice | number}} VND</small></h6>
+                                    <span  *ngIf="item.productQuantily == 0 "  class="text-danger">Đã hết hàng</span>
+                                </div>
+                                <div class="prd-bottom">
+
+                                    <a *ngIf="item.productQuantily > 0 " (click)="addToCart(item)" class="social-info">
+                                        <span class="ti-bag"></span>
+                                        <p class="hover-text">Thêm vào giỏ</p>
+                                    </a>
+                                    <a href="product-detail/{{item.productID}}" class="social-info">
+                                        <span class="lnr lnr-move"></span>
+                                        <p class="hover-text">Xem thêm</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
