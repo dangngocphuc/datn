@@ -204,4 +204,12 @@ public class CommonUtils {
 				this.funcname = funcname;
 			}
 		}
+		
+        public static String Sha1EncryptText(String sInputText) {
+            try {
+                return DigestUtils.sha1Hex(sInputText);
+            } catch (Exception e) {
+                return null;
+            }
+        }
 }

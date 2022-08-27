@@ -40,6 +40,9 @@ public class UserServiceImpl implements UserService{
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 	
+    @Autowired
+    private CommonUtils commonUtils;
+	
 	@Override
 	public Page<User> findUser(UserRequest userParam, Pageable pageable) {
 
@@ -69,6 +72,8 @@ public class UserServiceImpl implements UserService{
 	}
 	@Override
 	public User saveUser(User user) {
+        String matKhau = commonUtils.Sha1EncryptText(user.getUserPass());
+        user.setUserPass(matKhau);
 		return userRepo.save(user);
 	}
 	@Override
@@ -83,9 +88,10 @@ public class UserServiceImpl implements UserService{
 		Long result = CommonUtils.LOGIN_FAIL;
 		Map<String, Object> paramMaps = new HashMap<String, Object>();
 		if (loginRequest.getUsername() != null && loginRequest.getPassword() != null) {
+	        String matKhau = commonUtils.Sha1EncryptText(loginRequest.getPassword());
 			sql = "select user_id from users where user_name= :username and user_pass = :password;";
 			paramMaps.put("username", loginRequest.getUsername());
-			paramMaps.put("password", loginRequest.getPassword());
+            paramMaps.put("password", matKhau);	
 		}
 		if (!sql.isEmpty()) {
 			result = namedParameterJdbcTemplate.queryForObject(sql, paramMaps, Long.class);
@@ -101,8 +107,9 @@ public class UserServiceImpl implements UserService{
 		Map<String, Object> paramMaps = new HashMap<String, Object>();
 		if (password != null && id != null) {
 			sql = "update users set user_pass = :password where user_id = :id;";
+	        String matKhau = commonUtils.Sha1EncryptText(password);
 			paramMaps.put("id", id);
-			paramMaps.put("password", password);
+			paramMaps.put("password", matKhau);
 		}
 		if (!sql.isEmpty()) {
 			int status = namedParameterJdbcTemplate.update(sql, paramMaps);
