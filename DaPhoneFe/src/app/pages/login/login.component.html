@@ -26,6 +26,13 @@
                         </nz-input-group>
                     </nz-form-control>
                 </nz-form-item>
+                <nz-form-item>
+                    <div class="col-md-4"></div>
+                        <div class="col-md-4 ml-4 ">
+                            <app-captcha [config]="captchaConfig" [submitted] = "submitted"></app-captcha>
+                        </div> 
+                    <div class="col-md-4"></div>
+                </nz-form-item>    
                 <nz-form-item class="row">
                     
                     <div class="col-md-4"></div>
