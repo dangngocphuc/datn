@@ -3,7 +3,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, concat, debounceTime, distinctUntilChanged, map, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { Category } from 'src/app/entity/Category';
-import { ProductParam } from 'src/app/entity/Product';
+import { Product, ProductParam } from 'src/app/entity/Product';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -26,7 +26,8 @@ export class HeaderComponent implements OnInit {
   controlArray: Map<string, any> = new Map<string, any>();
   pageSize = 5;
   pageIndex = 1;
-
+  cart: Product[] = [];
+  totalProduct : number; 
   constructor(
     private categoryService: CategoryService,
     private notification: NzNotificationService,
@@ -41,6 +42,12 @@ export class HeaderComponent implements OnInit {
     if (!(userName === '')) {
       this.userName = userName;
     }
+
+    const cart = localStorage.getItem('cart') || '';
+     if (cart) {
+       this.cart = JSON.parse(cart);
+       this.totalProduct = this.cart.length;
+     }
   }
   createNotification(type: string, title: string, message: string): void {
     this.notification.create(type, title, message);

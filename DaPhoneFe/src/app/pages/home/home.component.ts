@@ -19,6 +19,10 @@ export class HomeComponent implements OnInit {
   controlArray: Map<string, any> = new Map<string, any>();
   totalPrice:number = 0;
   cart: Product[] = [];
+  compare: Product[] = [];
+  lenthCompare: number ;
+  totalProduct : number; 
+
   constructor(
     private categoryService: CategoryService,
     private brandService: BrandService,
@@ -27,10 +31,19 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-     // declare cart 
+     // declare cart
+    //  debugger; 
      const cart = localStorage.getItem('cart') || '';
      if (cart) {
        this.cart = JSON.parse(cart);
+       this.totalProduct = this.cart.length;
+     }
+     
+     const compare = localStorage.getItem('compare') || '';
+     if (compare) {
+       this.compare = JSON.parse(compare);
+       this.lenthCompare =  this.compare.length;
+       console.log(this.lenthCompare);
      }
 
     this.getProducts(this.pageIndex,this.pageSize,'productID','descend')
@@ -105,6 +118,7 @@ export class HomeComponent implements OnInit {
       product.quanlityBuy = 1;
       this.cart.push(product);
       this.updateCart();
+      
       this.createNotification(
         'success',
         'Sản phẩm đã thêm vào giỏ hàng',
@@ -118,6 +132,43 @@ export class HomeComponent implements OnInit {
       );
     }
   }
+
+
+  addToCompare(product:Product){
+    this.lenthCompare = this.compare.length;
+    let duplicate = false;
+    this.compare.forEach((ele) => {
+      if (ele.productID == product.productID ) {
+        duplicate = true;
+      }
+    });
+    // if no => add item
+    if(!duplicate){
+      if(this.lenthCompare > 1){
+        this.createNotification(
+          'info',
+          'vui lòng xóa bớt sản phẩm để so sánh',
+          ''
+        );
+        return;
+      }else{
+        this.compare.push(product);
+        this.updateCompare();
+        this.createNotification(
+          'success',
+          'Sản phẩm đã thêm vào so sánh',
+          ''
+        );
+      }
+    }else{
+      this.createNotification(
+        'info',
+        'Sản phẩm đã có trong so sánh',
+        ''
+      );
+    }
+  }
+
   updateCart() {
     this.totalPrice = 0;
     this.cart.forEach((ele) => {
@@ -125,5 +176,9 @@ export class HomeComponent implements OnInit {
     });
     localStorage.setItem('total', this.totalPrice.toString());
     localStorage.setItem('cart', JSON.stringify(this.cart));
+  }
+
+  updateCompare() {
+    localStorage.setItem('compare', JSON.stringify(this.compare));
   }
 }

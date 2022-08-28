@@ -97,14 +97,21 @@
                                     <span  *ngIf="item.productQuantily == 0 "  class="text-danger">Đã hết hàng</span>
                                 </div>
                                 <div class="prd-bottom">
-
-                                    <a *ngIf="item.productQuantily > 0 " (click)="addToCart(item)" class="social-info">
+                                    <a *ngIf="item.productQuantily > 0" (click)="addToCart(item)" class="social-info">
                                         <span class="ti-bag"></span>
                                         <p class="hover-text">Thêm vào giỏ</p>
                                     </a>
                                     <a href="product-detail/{{item.productID}}" class="social-info">
                                         <span class="lnr lnr-move"></span>
                                         <p class="hover-text">Xem thêm</p>
+                                    </a>
+                                    <!-- <a *ngif="compare" (click)="addToCompare(item)">
+                                        <span class="ti-bag"></span>
+                                        <p class="hover-text">Đã thêm So sánh</p>
+                                    </a> -->
+                                    <a  (click)="addToCompare(item)">
+                                        <span class="ti-bag"></span>
+                                        <p class="hover-text">So sánh</p>
                                     </a>
                                 </div>
                             </div>
@@ -200,7 +207,7 @@
                         <img style="height:60%; width:60%;" class="img-fluid"  src="../../assets/{{product?.productImage}}" alt="">
                         <div class="product-details">
                             <div class="price">
-                                <h6> {{product?.productPrice | number}} VNĐ &emsp;<small>{{product.productMarketprice | number}} VND</small></h6>
+                                <h6> {{product?.productPrice | number}} VNĐ &emsp;<small>{{product?.productMarketprice | number}} VND</small></h6>
                             </div>
                             <h4>{{product?.productName}}</h4>
                             <div class="add-bag d-flex align-items-center justify-content-center">
