@@ -56,6 +56,7 @@ export class CartComponent implements OnInit {
       (element) => element.productID != id
     );
     this.updateCart();
+    window.location.reload();
   }
 
   updateCart() {

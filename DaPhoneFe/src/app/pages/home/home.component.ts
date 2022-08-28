@@ -115,15 +115,18 @@ export class HomeComponent implements OnInit {
     });
     // if no => add item
     if(!duplicate){
+      debugger;
       product.quanlityBuy = 1;
       this.cart.push(product);
       this.updateCart();
-      
+     
       this.createNotification(
         'success',
         'Sản phẩm đã thêm vào giỏ hàng',
         ''
       );
+      window.location.reload();
+      // window.location.href = '/mycart'
     }else{
       this.createNotification(
         'info',

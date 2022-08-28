@@ -8,7 +8,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './pages/home/home.component';
@@ -25,12 +25,16 @@ import { PaySuccessComponent } from './pages/pay-success/pay-success.component';
 import { OrderComponent } from './pages/order/order.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { LoaderService } from './services/loader/loader.service';
+import { LoaderComponent } from './pages/loader/loader.component';
+import { LoaderInterceptor } from './interceptor/loader.interceptor';
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    LoaderComponent,
     ProductComponent,
     LoginComponent,
     CartComponent,
@@ -53,7 +57,7 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     SharedModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [LoaderService,{ provide: NZ_I18N, useValue: en_US },{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
