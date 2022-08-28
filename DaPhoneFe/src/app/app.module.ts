@@ -7,7 +7,7 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
@@ -28,6 +28,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { LoaderService } from './services/loader/loader.service';
 import { LoaderComponent } from './pages/loader/loader.component';
 import { LoaderInterceptor } from './interceptor/loader.interceptor';
+import { CaptchaModule } from './captcha/captcha.module';
 registerLocaleData(en);
 
 @NgModule({
@@ -52,10 +53,12 @@ registerLocaleData(en);
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     NgSelectModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    CaptchaModule
   ],
   providers: [LoaderService,{ provide: NZ_I18N, useValue: en_US },{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }],
   bootstrap: [AppComponent]
