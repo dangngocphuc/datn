@@ -162,6 +162,7 @@ export class HomeComponent implements OnInit {
           'Sản phẩm đã thêm vào so sánh',
           ''
         );
+        window.location.reload();
       }
     }else{
       this.createNotification(

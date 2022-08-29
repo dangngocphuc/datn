@@ -28,13 +28,18 @@
                 </nz-form-item>
                 <nz-form-item>
                     <nz-form-label>Phương thức thanh toán</nz-form-label>
-                    <nz-select formControlName="payment">
+                    <!-- <nz-select formControlName="payment">
                         <nz-option nzValue="Live" nzLabel="Trực tiếp"></nz-option>
                         <nz-option nzValue="Bank transfer" nzLabel="Chuyển khoản"></nz-option>
-                    </nz-select>
+                    </nz-select> -->
+                   <select formControlName="payment" name="payment" id="payment" (change)="paymentMethods($event)">
+                        <option value="Live">Trực tiếp</option>
+                        <option value="Bank transfer">Chuyển khoản</option>
+                   </select>
                 </nz-form-item>
+                
+                <ngx-paypal [config]="payPalConfig" *ngIf="this.payment == 'Bank transfer'" ></ngx-paypal>
                 <nz-form-item class="row">
-                    
                         <div class="col-md-8"></div>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-outline-success " >Xác nhận thanh toán</button>

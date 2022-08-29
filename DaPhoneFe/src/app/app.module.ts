@@ -29,6 +29,11 @@ import { LoaderService } from './services/loader/loader.service';
 import { LoaderComponent } from './pages/loader/loader.component';
 import { LoaderInterceptor } from './interceptor/loader.interceptor';
 import { CaptchaModule } from './captcha/captcha.module';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPayPalModule } from 'ngx-paypal';
+
+
 registerLocaleData(en);
 
 @NgModule({
@@ -58,7 +63,11 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     SharedModule,
-    CaptchaModule
+    CaptchaModule,
+    PopupModule,
+    NgbModule,
+    NgxPayPalModule,
+    NgSelectModule
   ],
   providers: [LoaderService,{ provide: NZ_I18N, useValue: en_US },{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }],
   bootstrap: [AppComponent]

@@ -86,10 +86,6 @@ export class HeaderComponent implements OnInit {
     });
 
   }
-  loadDmDvqhns() {
-    
-    
-  }
   getProducts() {
     this.lstProducts = concat(
       this.productService.getProductSearch( new ProductParam(1, 5)).pipe(
